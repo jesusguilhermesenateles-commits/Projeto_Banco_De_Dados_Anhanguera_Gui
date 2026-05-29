@@ -7,15 +7,16 @@ namespace App_segundo_app_BancoDeDados.Controllers
 {
     public class UsuarioController : Controller
     {
-        private IUsuarioRepositorio _usuarioRepositorio;
 
-        public UsuarioController (IUsuarioRepositorio usuarioRepositorio)
+        private IUsuarioRepositorio _usuarioRepository;
+
+        public UsuarioController(IUsuarioRepositorio usuarioRepository)
         {
-            _usuarioRepositorio = usuarioRepositorio;
+            _usuarioRepository = usuarioRepository;
         }
         public IActionResult Index()
         {
-            return View(_usuarioRepositorio.ObterTodosUsuarios);
+            return View(_usuarioRepository.ObterTodosUsuarios());
         }
         [HttpGet]
         public IActionResult CadastrarUsuario()
@@ -27,10 +28,23 @@ namespace App_segundo_app_BancoDeDados.Controllers
         {
             if (ModelState.IsValid)
             {
-                _usuarioRepositorio.Cadastrar(usuario);
-                return RedirectToAction("index");
+                _usuarioRepository.Cadastrar(usuario);
+                return RedirectToAction("Index");
             }
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Atualizar(int id)
+        {
+            return View(_usuarioRepository.ObterUsuario(id));
+        }
+        [HttpPost]
+        public IActionResult Atualizar(Usuario usuario)
+        {
+            return View();
+        }
+        
+
     }
 }
